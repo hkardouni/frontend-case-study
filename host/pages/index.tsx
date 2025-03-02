@@ -1,10 +1,10 @@
 import dynamic from 'next/dynamic';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { addToBasket } from '../store/productsSlice';
+import { addToBasket, removeFromBasket } from '../store/productsSlice';
 import { useGetProductsQuery } from '../store/api';
+import { List, Button } from 'antd';
 
-const ProductList = dynamic(() => import('products/ProductList'), { ssr: false });
 const Basket = dynamic(() => import('basket/Basket'), { ssr: false });
 
 export default function Home() {
@@ -17,21 +17,34 @@ export default function Home() {
     dispatch(addToBasket(product));
   };
 
+  const handleRemoveFromBasket = (id: number) => {
+    console.log('Removing from basket:', id);
+    dispatch(removeFromBasket(id));
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading products</div>;
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <h1>E-Commerce Demo</h1>
-      <ProductList products={products} />
-      <div>
-        {products.map((product) => (
-          <button key={product.id} onClick={() => handleAddToBasket(product)}>
-            Add {product.title} to Basket
-          </button>
-        ))}
-      </div>
-      <Basket items={selectedItems} />
+      <List
+        header={<h2>Product List</h2>}
+        bordered
+        dataSource={products}
+        renderItem={(product) => (
+          <List.Item
+            actions={[
+              <Button type="primary" onClick={() => handleAddToBasket(product)}>
+                Add to Basket
+              </Button>,
+            ]}
+          >
+            {product.title} - ${product.price}
+          </List.Item>
+        )}
+      />
+      <Basket items={selectedItems} onRemove={handleRemoveFromBasket} />
     </div>
   );
 }

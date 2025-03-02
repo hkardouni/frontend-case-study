@@ -22,6 +22,10 @@ module.exports = {
         exclude: /node_modules/,
         use: 'babel-loader',
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: {
@@ -38,8 +42,8 @@ module.exports = {
         './Basket': './src/components/Basket',
       },
       shared: {
-        react: { singleton: true, eager: true, requiredVersion: '18' },
-        'react-dom': { singleton: true, eager: true, requiredVersion: '18' },
+        react: { singleton: true, eager: true, requiredVersion: '18.2.0' },
+        'react-dom': { singleton: true, eager: true, requiredVersion: '18.2.0' },
       },
     }),
   ],

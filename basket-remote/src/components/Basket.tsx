@@ -1,16 +1,28 @@
 import React from 'react';
+import { List, Button } from 'antd';
 
-const Basket = ({ items }: { items: { id: number; title: string; price: number }[] }) => {
+const Basket: React.FC<{
+  items: { id: number; title: string; price: number }[];
+  onRemove: (id: number) => void;
+}> = ({ items, onRemove }) => {
   return (
-    <div>
-      <h2>Basket</h2>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
+    <div style={{ marginTop: '20px' }}>
+      <List
+        header={<h2>Basket</h2>}
+        bordered
+        dataSource={items}
+        renderItem={(item) => (
+          <List.Item
+            actions={[
+              <Button color="danger" variant='solid' onClick={() => onRemove(item.id)}>
+                Remove
+              </Button>,
+            ]}
+          >
             {item.title} - ${item.price}
-          </li>
-        ))}
-      </ul>
+          </List.Item>
+        )}
+      />
     </div>
   );
 };

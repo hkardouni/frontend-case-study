@@ -20,6 +20,6 @@ declare module 'products/ProductList' {
       price: number;
     }
   
-    const Basket: FC<{ items: Item[] }>;
+    const Basket: FC<{ items: Item[]; onRemove: (id: number) => void }>;
     export default Basket;
   }
